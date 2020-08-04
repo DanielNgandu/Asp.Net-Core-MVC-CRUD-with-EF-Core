@@ -49,6 +49,7 @@ namespace WebApplication1.Models
 
         [Required(ErrorMessage = "This field is required.")]
         [DisplayName("Date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
 
         public DateTime Date { get; set; }
     }

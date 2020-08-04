@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
+using static WebApplication1.Helper;
 
 namespace WebApplication1.Controllers
 {
@@ -25,18 +26,22 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Transaction/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [NoDirectAccess]
+
+        public async Task<IActionResult> View(int id = 0)
         {
             if (id == null)
             {
-                return NotFound();
+                return View(new TransactionModel());
+
             }
 
             var transactionModel = await _context.Transactions
                 .FirstOrDefaultAsync(m => m.TransactionId == id);
             if (transactionModel == null)
             {
-                return NotFound();
+                return View(new TransactionModel());
+
             }
 
             return View(transactionModel);
@@ -67,6 +72,7 @@ namespace WebApplication1.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [NoDirectAccess]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit(int id, [Bind("TransactionId,AccountNumber,BeneficiaryName,BankName,SwiftCode,Amount")] TransactionModel transactionModel)
         {
@@ -105,24 +111,6 @@ namespace WebApplication1.Controllers
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", transactionModel) });
         }
 
-        // GET: Transaction/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transactionModel = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.TransactionId == id);
-            if (transactionModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(transactionModel);
-        }
-
         // POST: Transaction/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -131,8 +119,9 @@ namespace WebApplication1.Controllers
             var transactionModel = await _context.Transactions.FindAsync(id);
             _context.Transactions.Remove(transactionModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList()) });
         }
+
 
         private bool TransactionModelExists(int id)
         {

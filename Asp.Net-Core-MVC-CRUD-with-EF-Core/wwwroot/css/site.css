@@ -70,28 +70,43 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
-.loader {
-    -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
-    border: 3px solid #ddd;
-    border-top: 3px solid #42a5f5;
-    border-radius: 50%;
-    height: 75px;
-    width: 75px;
+
+
+
+
+/*loader*/
+.loaderbody {
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    background-color: rgba(128,128,128,0.2);
+    z-index: 2147483647;
 }
 
-@-webkit-keyframes spin {
-    to {
-        border-top-color: #ec407a;
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 45%;
+    left: 40%;
 }
 
 @keyframes spin {
-    to {
-        border-top-color: #ec407a;
-        -webkit-transform: rotate(360deg);
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
         transform: rotate(360deg);
     }
+}
+
+.hide {
+    display: none;
 }
