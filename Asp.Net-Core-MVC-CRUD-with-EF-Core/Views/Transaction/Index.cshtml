@@ -1,0 +1,16 @@
+﻿@model IEnumerable<WebApplication1.Models.TransactionModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center"><i class="fas fa-money-check text-success"></i>Transacion History</h1>
+
+<p>
+    <a asp-action="AddOrEdit">Create New</a>
+</p>
+
+
+<div id="view-all">
+    @await Html.PartialAsync("_ViewAll", Model)
+</div>
